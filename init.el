@@ -121,6 +121,15 @@
                       :family my-ui-font-family
                       :height my-font-height))
 
+;;; tab-bar — Platinum 立體分頁(workspace 式；凸起/凹陷 face 已在主題設好)
+
+(setq tab-bar-show 1                  ; 只有 ≥2 個 tab 才顯示分頁列(平時不佔空間)
+      tab-bar-new-button-show nil     ; 藏掉現代風的 [+]
+      tab-bar-close-button-show nil   ; 藏掉現代風的 [x]
+      tab-bar-separator " "           ; 標籤間留縫,浮雕邊較清楚
+      tab-bar-tab-hints t)            ; 標籤前加數字 1 2 3(老介面感 + C-x t <n> 可跳)
+(tab-bar-mode 1)
+
 ;;; Completion
 
 (use-package vertico
@@ -145,6 +154,18 @@
   (completion-styles '(orderless basic))
   (completion-category-defaults nil)
   (completion-category-overrides '((file (styles basic partial-completion)))))
+
+;; 補全清單改成畫面正中的浮動框(像 Mac 對話框)；僅 GUI 有效,終端機自動 fallback
+(use-package vertico-posframe
+  :after vertico
+  :custom
+  (vertico-posframe-poshandler #'posframe-poshandler-frame-center) ; 出現在正中
+  (vertico-posframe-border-width 2)                                ; 2px 邊框
+  (vertico-posframe-width 110)
+  (vertico-posframe-parameters '((left-fringe . 8) (right-fringe . 8))) ; 內距,不貼邊
+  :config
+  (vertico-posframe-mode 1)
+  (set-face-attribute 'vertico-posframe-border nil :background "#8a7c66")) ; yorha 框色
 
 ;;; Git
 
