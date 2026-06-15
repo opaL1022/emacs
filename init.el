@@ -184,6 +184,55 @@
 (use-package magit
   :bind ("C-x g" . magit-status))
 
+;;; 括號 — 自動補對 + 高亮對應(全內建)
+
+(electric-pair-mode 1)          ; 打 ( 自動補 )、選取後打括號會包住選取
+(setq show-paren-delay 0)
+(show-paren-mode 1)             ; 高亮對應括號(主題已設配色)
+
+;;; corfu — buffer 內即時補全 popup(LSP/關鍵字候選打字就跳)
+
+(use-package corfu
+  :init
+  (global-corfu-mode 1)
+  :custom
+  (corfu-auto t)                ; 打字自動跳候選(不用按 TAB)
+  (corfu-auto-delay 0.15)
+  (corfu-auto-prefix 2)         ; 打滿 2 個字才跳
+  (corfu-cycle t)               ; 候選循環
+  (corfu-quit-no-match 'separator)
+  :config
+  (corfu-popupinfo-mode 1))     ; 候選旁顯示文件說明
+(setq tab-always-indent 'complete) ; TAB:先縮排,已對齊時觸發補全
+
+;;; 語言 major mode(內建以外的) + 副檔名映射
+
+(use-package lua-mode)
+(use-package markdown-mode)
+;; CUDA / HIP 本質是 C++,交給 c++-mode + clangd
+(dolist (pat '("\\.cu\\'" "\\.cuh\\'" "\\.hip\\'"))
+  (add-to-list 'auto-mode-alist (cons pat 'c++-mode)))
+
+;;; eglot — LSP client(Emacs 30 內建)
+
+(use-package eglot
+  :ensure nil                   ; 內建,不從 elpa 裝
+  :hook ((python-mode c-mode c++-mode lua-mode sh-mode
+          latex-mode markdown-mode) . eglot-ensure)
+  :bind (:map eglot-mode-map
+              ("C-c l r" . eglot-rename)        ; 重新命名符號
+              ("C-c l a" . eglot-code-actions)  ; code action
+              ("C-c l f" . eglot-format))       ; 格式化
+  :custom
+  (eglot-autoshutdown t)        ; 最後一個 buffer 關掉就停 server
+  :config
+  ;; 指定各語言用哪個 server(eglot 只是 client;clangd 是 c/c++ 預設,不用設)
+  (add-to-list 'eglot-server-programs '((python-mode)      . ("pyright-langserver" "--stdio")))
+  (add-to-list 'eglot-server-programs '((lua-mode)         . ("lua-language-server")))
+  (add-to-list 'eglot-server-programs '((sh-mode)          . ("bash-language-server" "start")))
+  (add-to-list 'eglot-server-programs '((latex-mode tex-mode) . ("texlab")))
+  (add-to-list 'eglot-server-programs '((markdown-mode)    . ("marksman"))))
+
 ;;; Startup screen — retro 風 *scratch* banner(開 Emacs 像開老應用程式)
 
 (setq initial-major-mode 'lisp-interaction-mode)

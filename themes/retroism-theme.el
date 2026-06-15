@@ -74,6 +74,12 @@
    `(marginalia-documentation ((t (:foreground ,muted :slant italic))))
    `(marginalia-key ((t (:foreground ,accent))))
 
+   ;; corfu buffer 內補全 popup
+   `(corfu-default ((t (:background ,bg-alt :foreground ,fg))))
+   `(corfu-current ((t (:background ,selection :foreground ,fg :weight bold))))
+   `(corfu-border ((t (:background ,border))))
+   `(corfu-bar ((t (:background ,accent))))
+
    `(show-paren-match ((t (:foreground ,accent-light :background ,accent :weight bold))))
    `(show-paren-mismatch ((t (:foreground ,accent-light :background ,red :weight bold))))
 

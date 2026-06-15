@@ -3,4 +3,4 @@
 
 (setq savehist-minibuffer-history-variables '(extended-command-history yes-or-no-p-history file-name-history))
 (setq yes-or-no-p-history '("yes"))
-(setq file-name-history '("~/Documents/"))
+(setq file-name-history '("~/.config/" "~/Documents/"))
