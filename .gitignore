@@ -5,6 +5,7 @@
 
 # 機器本地狀態
 /auto-save-list/
+/undo-fu-session/
 /eshell/
 /games/
 /tutorial/
