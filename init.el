@@ -126,9 +126,10 @@
 (setq tab-bar-show 1                  ; 只有 ≥2 個 tab 才顯示分頁列(平時不佔空間)
       tab-bar-new-button-show nil     ; 藏掉現代風的 [+]
       tab-bar-close-button-show nil   ; 藏掉現代風的 [x]
-      ;; 細的「亮」縫:斷開 face run(讓每個按鈕各自有浮雕邊→立體分界),
-      ;; 但用按鈕色而非凹槽深色,所以不會看起來像凹陷間隔
-      tab-bar-separator (propertize " " 'face '(:background "#d9caba"))
+      ;; 2px 的「亮」縫:斷開 face run(讓每個按鈕各自有浮雕邊→立體分界),
+      ;; 用按鈕色而非凹槽深色,所以不會像凹陷間隔。用 display 控成 2px 寬(不是一整格)
+      tab-bar-separator (propertize " " 'display '(space :width (2))
+                                    'face '(:background "#d9caba"))
       tab-bar-tab-hints t)            ; 標籤前加數字 1 2 3(老介面感 + C-x t <n> 可跳)
 
 ;; 每個分頁內側留白,數字/文字不貼著浮雕邊(像有 padding 的白金按鈕)
