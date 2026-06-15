@@ -224,7 +224,30 @@
   ;; preview/export 用 Python-Markdown + 擴充(預設那支不渲染表格等 GFM 語法)
   ;; extra=表格/圍欄程式碼/註腳；pymdownx.tilde=刪節線~~；pymdownx.tasklist=工作清單[ ]
   ;; 需要套件: python-markdown(markdown_py) + python-pymdown-extensions
-  (markdown-command "markdown_py -x extra -x sane_lists -x pymdownx.tilde -x pymdownx.tasklist"))
+  (markdown-command "markdown_py -x extra -x sane_lists -x pymdownx.tilde -x pymdownx.tasklist")
+  :config
+  ;; 瀏覽器預覽(C-c C-c v)的 HTML <head> 注入基本 CSS + mermaid.js,
+  ;; 並把 ```mermaid 區塊(markdown_py 會輸出成 code.language-mermaid)轉成圖。
+  ;; 注意:mermaid 用 JS 在瀏覽器繪製,所以只有 C-c C-c v(外部瀏覽器)會畫,
+  ;; eww 的 live preview(C-c C-c l)不跑 JS、畫不出來。需要連網抓 mermaid CDN。
+  (setq markdown-xhtml-header-content
+        (concat
+         "<meta charset=\"utf-8\">"
+         "<style>"
+         "body{max-width:880px;margin:0 auto;padding:2rem;line-height:1.6;"
+         "font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;color:#24292f;}"
+         "table{border-collapse:collapse;}th,td{border:1px solid #d0d7de;padding:.4em .8em;}"
+         "th{background:#f6f8fa;}pre{background:#f6f8fa;padding:1em;overflow:auto;border-radius:6px;}"
+         "code{font-family:ui-monospace,monospace;}blockquote{color:#57606a;border-left:.25em solid #d0d7de;padding:0 1em;margin:0;}"
+         "</style>"
+         "<script type=\"module\">"
+         "import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';"
+         "mermaid.initialize({startOnLoad:false,theme:'neutral'});"
+         "window.addEventListener('load',()=>{"
+         "document.querySelectorAll('code.language-mermaid').forEach((el)=>{"
+         "const d=document.createElement('div');d.className='mermaid';d.textContent=el.textContent;"
+         "el.closest('pre').replaceWith(d);});mermaid.run();});"
+         "</script>")))
 ;; CUDA / HIP 本質是 C++,交給 c++-mode + clangd
 (dolist (pat '("\\.cu\\'" "\\.cuh\\'" "\\.hip\\'"))
   (add-to-list 'auto-mode-alist (cons pat 'c++-mode)))
