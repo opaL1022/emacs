@@ -22,6 +22,6 @@
 
 ;;; Initial font
 
-(add-to-list 'default-frame-alist '(font . "Dank Mono-18"))
+(add-to-list 'default-frame-alist '(font . "Monaco-16"))
 
 ;;; early-init.el ends here

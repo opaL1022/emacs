@@ -40,6 +40,16 @@
    `(header-line ((t (:foreground ,fg :background ,bg-alt :box (:line-width 1 :color ,border)))))
    `(vertical-border ((t (:foreground ,border))))
 
+   ;; 立體浮雕的視窗分隔線(亮邊在上/左、暗邊在下/右)
+   `(window-divider ((t (:foreground ,bg-alt))))
+   `(window-divider-first-pixel ((t (:foreground ,accent-light))))
+   `(window-divider-last-pixel ((t (:foreground ,border))))
+
+   ;; Platinum 立體分頁(tab-bar)
+   `(tab-bar ((t (:background ,bg-alt :foreground ,fg :box (:line-width 1 :color ,border)))))
+   `(tab-bar-tab ((t (:background ,bg :foreground ,fg :weight bold :box (:line-width 2 :style released-button)))))
+   `(tab-bar-tab-inactive ((t (:background ,bg-alt :foreground ,muted :box (:line-width 2 :style pressed-button)))))
+
    `(line-number ((t (:foreground ,line-nr :background ,bg))))
    `(line-number-current-line ((t (:foreground ,accent :background ,bg-alt :weight bold))))
 

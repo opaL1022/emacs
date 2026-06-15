@@ -2,18 +2,34 @@
 
 ;;; Basic UI
 
-(menu-bar-mode -1)
+;; Mac OS Platinum 的招牌：永遠掛在頂端的選單列(交給 GTK Platinum 主題繪製)
+(menu-bar-mode 1)
 (tool-bar-mode -1)
 
 ;; Retro toolkit scroll bars — drawn by the ClassicPlatinum GTK theme
-;; (chunky 3D trough + stepper arrows). Classic right-hand placement.
+;; (chunky 3D trough + paired stepper arrows). Classic right-hand placement.
 (scroll-bar-mode 1)
 (set-scroll-bar-mode 'right)
 (add-to-list 'default-frame-alist '(scroll-bar-width . 16))
 
+;; 視窗之間用立體分隔線(取代細線)，更有 Platinum 的 3D 浮雕感
+(window-divider-mode 1)
+(setq window-divider-default-places t
+      window-divider-default-right-width 3
+      window-divider-default-bottom-width 3)
+
 (global-display-line-numbers-mode 1)
 (column-number-mode 1)
 (size-indication-mode 1)   ; 老系統味的「行/欄 + 檔案位置%」狀態列
+
+;;; Platinum native chrome — 讓彈出元素都走 GTK(Platinum 外觀)
+
+(setq use-dialog-box t             ; yes/no 用 Platinum 對話框
+      use-file-dialog t            ; 開檔走 GTK 檔案對話框
+      x-gtk-use-system-tooltips t) ; tooltip 用系統(Platinum)樣式
+
+(tooltip-mode 1)
+(context-menu-mode 1)              ; 右鍵 = Platinum 風格 context menu
 
 ;;; Better defaults
 
@@ -65,8 +81,9 @@
 
 ;;; Font
 
-(defvar my-font-family "Dank Mono")
-(defvar my-font-height 180)
+(defvar my-font-family "Monaco")   ; 正版 Mac 等寬字(若想換回改這裡，例如 "Dank Mono")
+(defvar my-font-height 160)
+(defvar my-ui-font-family "Charcoal") ; Mac OS 8/9 系統 UI 字，給 variable-pitch
 
 (defun my-set-font-for-frame (frame)
   "Set font for graphical FRAME."
@@ -81,6 +98,12 @@
                       :height my-font-height))
 
 (add-hook 'after-make-frame-functions #'my-set-font-for-frame)
+
+;; UI 元素(variable-pitch：Info、which-key、各種比例字介面)用 Mac 系統字 Charcoal
+(when (display-graphic-p)
+  (set-face-attribute 'variable-pitch nil
+                      :family my-ui-font-family
+                      :height my-font-height))
 
 ;;; Completion
 
