@@ -182,10 +182,8 @@
 ;;; Undo — 直覺的 undo/redo + 跨重開保留歷史
 
 (use-package undo-fu
-  :bind (("C-/"   . undo-fu-only-undo)   ; undo(Emacs 慣用鍵)
-         ("C-z"   . undo-fu-only-undo)   ; undo(其他編輯器慣用鍵;原本 C-z 是暫停 frame)
-         ("C-?"   . undo-fu-only-redo)   ; redo = Ctrl+Shift+/
-         ("C-S-z" . undo-fu-only-redo))) ; redo = Ctrl+Shift+Z
+  :bind (("C-/" . undo-fu-only-undo)    ; undo
+         ("C-?" . undo-fu-only-redo)))  ; redo = Ctrl+Shift+/
 
 ;; 把 undo 歷史存到磁碟,重開檔案後可繼續 undo 到之前的變動
 (use-package undo-fu-session
