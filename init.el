@@ -304,10 +304,11 @@
         ;; 用 zathura 看 PDF(AUCTeX 內建條目,含 SyncTeX 正向跳轉)
         TeX-view-program-selection '((output-pdf "Zathura")))
   :config
-  ;; latexmk 編譯(自動跑多次 pass + 參考文獻);設成 C-c C-c 的預設指令
-  (add-to-list 'TeX-command-list
-               '("LatexMk" "latexmk -pdf -synctex=1 -interaction=nonstopmode %t"
-                 TeX-run-TeX nil (LaTeX-mode) :help "latexmk → PDF"))
+  ;; latexmk 整合:引擎(pdflatex/xelatex/lualatex)跟著 AUCTeX 的 TeX-engine 走
+  ;; (在引擎提示選 XeTeX/LuaTeX 就會用對的引擎),並自動帶 SyncTeX。設成 C-c C-c 預設。
+  (require 'auctex-latexmk)
+  (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+  (auctex-latexmk-setup)
   (setq-default TeX-command-default "LatexMk"))
 
 ;;; Startup screen — retro 風 *scratch* banner(開 Emacs 像開老應用程式)

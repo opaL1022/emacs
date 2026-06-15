@@ -1,20 +1,21 @@
 ;;; -*- coding: utf-8; mode: lisp-data -*-
-(("/home/opal/Documents/llm_cybersecurity/"
+(("/home/opal/Documents/"
+  (dired-filename . "/home/opal/Documents/probability"))
+ ("/home/opal/Documents/probability/"
+  (dired-filename . "/home/opal/Documents/probability/review.tex"))
+ ("/home/opal/Documents/llm_cybersecurity/"
   (dired-filename
    . "/home/opal/Documents/llm_cybersecurity/Group133_final_report.md"))
  ("/home/opal/Documents/notes/HPC/"
-  (dired-filename . "/home/opal/Documents/notes/HPC/.."))
+  (dired-filename . "/home/opal/Documents/notes"))
  ("/home/opal/Documents/notes/"
-  (dired-filename . "/home/opal/Documents/notes/.."))
- ("/home/opal/Documents/"
-  (dired-filename . "/home/opal/Documents/HPC"))
+  (dired-filename . "/home/opal/Documents"))
  ("/home/opal/Documents/HPC/"
   (dired-filename . "/home/opal/Documents/HPC/HPCI-mock"))
  ("/home/opal/Documents/HPC/HPCI-mock/"
   (dired-filename . "/home/opal/Documents/HPC/HPCI-mock/result"))
  ("/home/opal/Documents/HPC/HPCI-mock/result/ICON/"
-  (dired-filename
-   . "/home/opal/Documents/HPC/HPCI-mock/result/ICON/.."))
+  (dired-filename . "/home/opal/Documents/HPC/HPCI-mock/result"))
  ("/home/opal/Documents/HPC/HPCI-mock/result/"
   (dired-filename
    . "/home/opal/Documents/HPC/HPCI-mock/result/HPL-results.md"))
