@@ -23,6 +23,7 @@
 (global-display-line-numbers-mode 1)
 (column-number-mode 1)
 (size-indication-mode 1)   ; 老系統味的「行/欄 + 檔案位置%」狀態列
+(global-hl-line-mode 1)    ; 高亮游標所在行(主題的 bg-alt 淡色)
 
 ;;; Platinum native chrome — 讓彈出元素都走 GTK(Platinum 外觀)
 
@@ -44,6 +45,18 @@
 (setq-default tab-width 2)
 
 (delete-selection-mode 1)
+
+;;; Persistence — 記住歷史 / 最近檔案 / 游標位置(全內建)
+
+(savehist-mode 1)                   ; minibuffer 歷史跨重開保留
+(recentf-mode 1)                    ; 記錄最近開過的檔案
+(setq recentf-max-saved-items 100)
+(save-place-mode 1)                 ; 重開檔案時回到上次游標位置
+
+;;; which-key — 按前綴鍵後浮出可用按鍵表(Emacs 30 內建)
+
+(setq which-key-idle-delay 0.5)
+(which-key-mode 1)
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
@@ -118,6 +131,15 @@
   :init
   (marginalia-mode 1))
 
+;; 補全項目前面加 Nerd Font 圖示(檔案/buffer/指令…)
+(use-package nerd-icons)
+
+(use-package nerd-icons-completion
+  :after marginalia
+  :config
+  (nerd-icons-completion-mode)
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
 (use-package orderless
   :custom
   (completion-styles '(orderless basic))
@@ -128,5 +150,21 @@
 
 (use-package magit
   :bind ("C-x g" . magit-status))
+
+;;; Startup screen — retro 風 *scratch* banner(開 Emacs 像開老應用程式)
+
+(setq initial-major-mode 'lisp-interaction-mode)
+(setq initial-scratch-message "\
+;;
+;;     ╔══════════════════════════════════════════╗
+;;     ║   R E T R O I S M   ·   E m a c s        ║
+;;     ║   yorha · platinum                       ║
+;;     ╚══════════════════════════════════════════╝
+;;
+;;     C-x C-f  開檔        C-x b   切 buffer
+;;     C-x C-r  最近檔案    C-x g   magit
+;;     M-x      指令        C-h k   查按鍵
+;;
+")
 
 ;;; init.el ends here
