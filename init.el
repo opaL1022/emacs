@@ -219,7 +219,11 @@
 ;;; 語言 major mode(內建以外的) + 副檔名映射
 
 (use-package lua-mode)
-(use-package markdown-mode)
+(use-package markdown-mode
+  :custom
+  ;; preview/export 用 Python-Markdown + extra(預設那支不渲染表格等 GFM 語法)
+  ;; extra = 表格/圍欄程式碼/註腳…；想要完整 GFM(刪節線~~、工作清單[ ])改用 pandoc
+  (markdown-command "markdown_py -x extra -x sane_lists"))
 ;; CUDA / HIP 本質是 C++,交給 c++-mode + clangd
 (dolist (pat '("\\.cu\\'" "\\.cuh\\'" "\\.hip\\'"))
   (add-to-list 'auto-mode-alist (cons pat 'c++-mode)))

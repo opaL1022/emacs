@@ -1,0 +1,29 @@
+;; -*- emacs-lisp -*- <26/06/15 15:42:46 ~/.config/emacs/tramp>
+;; Tramp connection history.  Don't change this file.
+;; Run `M-x tramp-cleanup-all-connections' instead.
+
+(((tramp-file-name "cache" nil nil nil nil nil nil)
+  ("tramp-version" "2.7.3.30.2"))
+ ((tramp-file-name "ssh" nil nil "dual" nil nil nil)
+  ("null-device" "/dev/null") ("uname" "Linux 6.8.0-124-generic")
+  ("locale" "LC_ALL=en_US.utf8") ("test" "test")
+  ("file-exists" "test -e")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin"
+    "/usr/local/sbin"))
+  ("pipe-buf" 4096) ("remote-shell" "/bin/sh") ("~" "/home/scc")
+  ("perl-file-spec" t) ("perl-cwd-realpath" t) ("perl" "\\perl")
+  ("stat" "env QUOTING_STYLE=locale \\stat") ("id" "/bin/id")
+  ("uid-integer" 1000) ("uid-string" "scc") ("gid-integer" 1000)
+  ("gid-string" "scc")
+  ("groups-integer" (1000 4 6 24 27 30 44 46 101 993 1002))
+  ("groups-string"
+   ("scc" "adm" "disk" "cdrom" "sudo" "dip" "video" "plugdev" "lxd"
+    "render" "asc-data"))
+  ("case-insensitive" nil) ("readlink" "\\readlink")
+  ("ls" "/bin/ls --color=never") ("ls--dired" "--dired")
+  ("ls--quoting-style=literal --show-control-chars"
+   "--quoting-style=literal --show-control-chars")
+  ("df-blocksize" 1)
+  ("df" "\\df --block-size=1 --output=size,used,avail") ("bzr" nil)
+  ("git" "\\git") ("hg" nil) ("mknod-or-mkfifo" "mknod %s p")))
