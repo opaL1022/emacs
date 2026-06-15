@@ -221,9 +221,10 @@
 (use-package lua-mode)
 (use-package markdown-mode
   :custom
-  ;; preview/export 用 Python-Markdown + extra(預設那支不渲染表格等 GFM 語法)
-  ;; extra = 表格/圍欄程式碼/註腳…；想要完整 GFM(刪節線~~、工作清單[ ])改用 pandoc
-  (markdown-command "markdown_py -x extra -x sane_lists"))
+  ;; preview/export 用 Python-Markdown + 擴充(預設那支不渲染表格等 GFM 語法)
+  ;; extra=表格/圍欄程式碼/註腳；pymdownx.tilde=刪節線~~；pymdownx.tasklist=工作清單[ ]
+  ;; 需要套件: python-markdown(markdown_py) + python-pymdown-extensions
+  (markdown-command "markdown_py -x extra -x sane_lists -x pymdownx.tilde -x pymdownx.tasklist"))
 ;; CUDA / HIP 本質是 C++,交給 c++-mode + clangd
 (dolist (pat '("\\.cu\\'" "\\.cuh\\'" "\\.hip\\'"))
   (add-to-list 'auto-mode-alist (cons pat 'c++-mode)))
