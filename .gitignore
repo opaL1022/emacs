@@ -1,0 +1,12 @@
+# 套件 / 編譯產生物（重開 Emacs 會自動重建）
+/elpa/
+/eln-cache/
+*.elc
+
+# 機器本地狀態
+/auto-save-list/
+/eshell/
+/games/
+/tutorial/
+/transient/
+.DS_Store
