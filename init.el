@@ -30,25 +30,7 @@
 
 (tooltip-mode 1)
 (context-menu-mode 1)              ; 右鍵 = Platinum 風格 context menu
-
-;;; Platinum 視窗標題列 — 每個 window 頂端置中 buffer 名(仿 Mac OS 8/9 視窗標題)
-
-(defun my-platinum-title-bar ()
-  "把 buffer 名置中，模擬 Mac Platinum 的視窗標題列。修改過的檔加上 ◆。"
-  (let* ((title (concat " " (buffer-name)
-                        (when (and buffer-file-name (buffer-modified-p)) " ◆")
-                        " "))
-         (avail (max 0 (- (window-total-width) (string-width title))))
-         (left  (make-string (/ avail 2) ?\s)))
-    (concat left title)))
-
-;; 只在「實檔/一般」buffer 掛標題列；像 magit 等自帶 header-line 的不覆蓋
-(defun my-enable-platinum-title-bar ()
-  "在目前 buffer 啟用 Platinum 標題列，除非該 buffer 已自訂 header-line。"
-  (unless (or header-line-format (minibufferp))
-    (setq header-line-format '((:eval (my-platinum-title-bar))))))
-
-(add-hook 'after-change-major-mode-hook #'my-enable-platinum-title-bar)
+;; 視窗標題列交給 hyprbars(外層裝飾)，Emacs 內不另放 header-line 標題
 
 ;;; Better defaults
 
