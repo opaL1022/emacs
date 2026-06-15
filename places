@@ -1,18 +1,26 @@
 ;;; -*- coding: utf-8; mode: lisp-data -*-
-(("/home/opal/Documents/"
-  (dired-filename . "/home/opal/Documents/llm_cybersecurity"))
- ("/home/opal/Documents/llm_cybersecurity/"
+(("/home/opal/Documents/llm_cybersecurity/"
   (dired-filename
    . "/home/opal/Documents/llm_cybersecurity/Group133_final_report.md"))
+ ("/home/opal/Documents/notes/HPC/"
+  (dired-filename . "/home/opal/Documents/notes/HPC/.."))
+ ("/home/opal/Documents/notes/"
+  (dired-filename . "/home/opal/Documents/notes/.."))
+ ("/home/opal/Documents/"
+  (dired-filename . "/home/opal/Documents/HPC"))
  ("/home/opal/Documents/HPC/"
   (dired-filename . "/home/opal/Documents/HPC/HPCI-mock"))
  ("/home/opal/Documents/HPC/HPCI-mock/"
   (dired-filename . "/home/opal/Documents/HPC/HPCI-mock/result"))
- ("/home/opal/Documents/HPC/HPCI-mock/result/第 12 組 (114062107)/"
-  (dired-filename . "/home/opal/Documents/HPC/HPCI-mock/result"))
+ ("/home/opal/Documents/HPC/HPCI-mock/result/ICON/"
+  (dired-filename
+   . "/home/opal/Documents/HPC/HPCI-mock/result/ICON/.."))
  ("/home/opal/Documents/HPC/HPCI-mock/result/"
   (dired-filename
-   . "/home/opal/Documents/HPC/HPCI-mock/result/icon_check"))
+   . "/home/opal/Documents/HPC/HPCI-mock/result/HPL-results.md"))
+ ("/home/opal/Documents/HPC/HPCI-mock/result/HPL-results.md" . 1412)
+ ("/home/opal/Documents/HPC/HPCI-mock/result/第 12 組 (114062107)/"
+  (dired-filename . "/home/opal/Documents/HPC/HPCI-mock/result"))
  ("/home/opal/Documents/HPC/HPCI-mock/result/icon_check/"
   (dired-filename
    . "/home/opal/Documents/HPC/HPCI-mock/result/icon_check/ICON-correctness-summary.md"))

@@ -280,8 +280,35 @@
   (add-to-list 'eglot-server-programs '((python-mode)      . ("pyright-langserver" "--stdio")))
   (add-to-list 'eglot-server-programs '((lua-mode)         . ("lua-language-server")))
   (add-to-list 'eglot-server-programs '((sh-mode)          . ("bash-language-server" "start")))
-  (add-to-list 'eglot-server-programs '((latex-mode tex-mode) . ("texlab")))
+  ;; LaTeX-mode 是 AUCTeX 的 major mode(不是內建 latex-mode 衍生),要單獨列才吃 texlab
+  (add-to-list 'eglot-server-programs '((LaTeX-mode latex-mode tex-mode) . ("texlab")))
   (add-to-list 'eglot-server-programs '((markdown-mode)    . ("marksman"))))
+
+;;; LaTeX — AUCTeX + latexmk 編譯 + zathura 看 PDF(SyncTeX);texlab LSP 已在 eglot 接上
+
+;; 套件名是 auctex,但要設定的 feature 是 tex(否則 :config 會在 TeX-command-list
+;; 還沒定義時就跑而報錯)。用 :ensure auctex 裝套件、用 tex 當載入點。
+(use-package tex
+  :ensure auctex
+  :defer t
+  :hook ((LaTeX-mode . eglot-ensure)              ; texlab(補全/診斷/跳定義)
+         (LaTeX-mode . TeX-source-correlate-mode) ; SyncTeX:原稿 ↔ PDF 互跳
+         (LaTeX-mode . turn-on-reftex))           ; \ref \cite 導覽(reftex,內建)
+  :init
+  (setq TeX-auto-save t
+        TeX-parse-self t
+        TeX-master nil                            ; 多檔專案會問主檔
+        TeX-PDF-mode t
+        reftex-plug-into-AUCTeX t
+        TeX-source-correlate-start-server t
+        ;; 用 zathura 看 PDF(AUCTeX 內建條目,含 SyncTeX 正向跳轉)
+        TeX-view-program-selection '((output-pdf "Zathura")))
+  :config
+  ;; latexmk 編譯(自動跑多次 pass + 參考文獻);設成 C-c C-c 的預設指令
+  (add-to-list 'TeX-command-list
+               '("LatexMk" "latexmk -pdf -synctex=1 -interaction=nonstopmode %t"
+                 TeX-run-TeX nil (LaTeX-mode) :help "latexmk → PDF"))
+  (setq-default TeX-command-default "LatexMk"))
 
 ;;; Startup screen — retro 風 *scratch* banner(開 Emacs 像開老應用程式)
 
