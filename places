@@ -1,2 +1,9 @@
 ;;; -*- coding: utf-8; mode: lisp-data -*-
-nil
+(("/home/opal/Documents/"
+  (dired-filename . "/home/opal/Documents/codes"))
+ ("/home/opal/Documents/codes/"
+  (dired-filename . "/home/opal/Documents/codes/cpp"))
+ ("/home/opal/Documents/codes/cpp/"
+  (dired-filename
+   . "/home/opal/Documents/codes/cpp/apple_division.cpp"))
+ ("/home/opal/Documents/codes/cpp/apple_division.cpp" . 485))

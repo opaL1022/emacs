@@ -45,10 +45,10 @@
    `(window-divider-first-pixel ((t (:foreground ,accent-light))))
    `(window-divider-last-pixel ((t (:foreground ,border))))
 
-   ;; Platinum 立體分頁(tab-bar)
-   `(tab-bar ((t (:background ,bg-alt :foreground ,fg :box (:line-width 1 :color ,border)))))
-   `(tab-bar-tab ((t (:background ,bg :foreground ,fg :weight bold :box (:line-width 2 :style released-button)))))
-   `(tab-bar-tab-inactive ((t (:background ,bg-alt :foreground ,muted :box (:line-width 2 :style pressed-button)))))
+   ;; Platinum 立體分頁(tab-bar)：較深的凹槽 strip 上,放一排凸起按鈕
+   `(tab-bar ((t (:background ,selection :foreground ,fg))))
+   `(tab-bar-tab ((t (:background ,bg :foreground ,fg :weight bold :box (:line-width 3 :style released-button)))))
+   `(tab-bar-tab-inactive ((t (:background ,bg-alt :foreground ,muted :box (:line-width 3 :style released-button)))))
 
    `(line-number ((t (:foreground ,line-nr :background ,bg))))
    `(line-number-current-line ((t (:foreground ,accent :background ,bg-alt :weight bold))))
