@@ -126,7 +126,7 @@
 (setq tab-bar-show 1                  ; 只有 ≥2 個 tab 才顯示分頁列(平時不佔空間)
       tab-bar-new-button-show nil     ; 藏掉現代風的 [+]
       tab-bar-close-button-show nil   ; 藏掉現代風的 [x]
-      tab-bar-separator " "           ; 按鈕間留縫,浮雕邊較清楚
+      tab-bar-separator ""            ; 按鈕直接相鄰,中間不要凹槽色的縫
       tab-bar-tab-hints t)            ; 標籤前加數字 1 2 3(老介面感 + C-x t <n> 可跳)
 
 ;; 每個分頁內側留白,數字/文字不貼著浮雕邊(像有 padding 的白金按鈕)
