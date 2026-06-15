@@ -37,7 +37,7 @@
 
    `(mode-line ((t (:foreground ,accent-light :background ,accent :box (:line-width 1 :style released-button) :weight bold))))
    `(mode-line-inactive ((t (:foreground ,muted :background ,bg-alt :box (:line-width 1 :color ,border)))))
-   `(header-line ((t (:foreground ,fg :background ,bg-alt :box (:line-width 1 :color ,border)))))
+   `(header-line ((t (:foreground ,fg-soft :background ,bg-alt :box (:line-width 2 :style released-button) :weight bold))))
    `(vertical-border ((t (:foreground ,border))))
 
    ;; 立體浮雕的視窗分隔線(亮邊在上/左、暗邊在下/右)
