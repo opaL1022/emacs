@@ -154,16 +154,16 @@
 ;;; Startup screen — retro 風 *scratch* banner(開 Emacs 像開老應用程式)
 
 (setq initial-major-mode 'lisp-interaction-mode)
+;; 只用上下橫線(單行,不需逐行對齊右邊),全英文
 (setq initial-scratch-message "\
 ;;
-;;     ╔══════════════════════════════════════════╗
-;;     ║   R E T R O I S M   ·   E m a c s        ║
-;;     ║   yorha · platinum                       ║
-;;     ╚══════════════════════════════════════════╝
+;;   ────────────────────────────────────────────
+;;     RETROISM · Emacs        yorha · platinum
+;;   ────────────────────────────────────────────
 ;;
-;;     C-x C-f  開檔        C-x b   切 buffer
-;;     C-x C-r  最近檔案    C-x g   magit
-;;     M-x      指令        C-h k   查按鍵
+;;     C-x C-f   find file       C-x b   switch buffer
+;;     C-x C-r   recent file     C-x g   magit
+;;     M-x       run command     C-h k   describe key
 ;;
 ")
 
