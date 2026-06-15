@@ -309,7 +309,8 @@
   (require 'auctex-latexmk)
   (setq auctex-latexmk-inherit-TeX-PDF-mode t)
   (auctex-latexmk-setup)
-  (setq-default TeX-command-default "LatexMk"))
+  (setq-default TeX-command-default "LatexMk"
+                TeX-engine 'xetex))  ; 跟 nvim vimtex 一致:全部用 xelatex(也不再被問引擎)
 
 ;;; Startup screen — retro 風 *scratch* banner(開 Emacs 像開老應用程式)
 
