@@ -3,6 +3,8 @@
   (dired-filename . "/home/opal/Documents/probability"))
  ("/home/opal/Documents/probability/"
   (dired-filename . "/home/opal/Documents/probability/review.tex"))
+ ("/home/opal/Documents/probability/review.tex" . 35060)
+ ("/home/opal/Documents/probability/_region_.tex" . 35201)
  ("/home/opal/Documents/llm_cybersecurity/"
   (dired-filename
    . "/home/opal/Documents/llm_cybersecurity/Group133_final_report.md"))

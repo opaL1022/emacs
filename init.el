@@ -312,6 +312,10 @@
   (setq-default TeX-command-default "LatexMk"
                 TeX-engine 'xetex))  ; 跟 nvim vimtex 一致:全部用 xelatex(也不再被問引擎)
 
+;; cdlatex — 快速數學輸入(^/_ 自動補括號、`縮寫+TAB 模板、`希臘字母、'修飾、$自動成對)
+(use-package cdlatex
+  :hook (LaTeX-mode . turn-on-cdlatex))
+
 ;;; Startup screen — retro 風 *scratch* banner(開 Emacs 像開老應用程式)
 
 (setq initial-major-mode 'lisp-interaction-mode)
