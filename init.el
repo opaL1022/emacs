@@ -18,6 +18,8 @@
       window-divider-default-right-width 3
       window-divider-default-bottom-width 3)
 
+;; 相對行號(目前行顯示絕對行號，其餘顯示與游標的距離 → 方便 nM/nk 跳行)
+(setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode 1)
 (column-number-mode 1)
 (size-indication-mode 1)   ; 老系統味的「行/欄 + 檔案位置%」狀態列
