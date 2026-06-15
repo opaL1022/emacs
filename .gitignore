@@ -3,9 +3,6 @@
 /eln-cache/
 *.elc
 
-# markdown 預覽的本地 JS 資產(大檔,用 assets/fetch-preview-assets.sh 重抓)
-/assets/*.js
-
 # 機器本地狀態
 /auto-save-list/
 /undo-fu-session/

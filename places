@@ -1,11 +1,15 @@
 ;;; -*- coding: utf-8; mode: lisp-data -*-
-(("/home/opal/Documents/HPC/"
+(("/home/opal/Documents/"
+  (dired-filename . "/home/opal/Documents/llm_cybersecurity"))
+ ("/home/opal/Documents/llm_cybersecurity/"
+  (dired-filename
+   . "/home/opal/Documents/llm_cybersecurity/Group133_final_report.md"))
+ ("/home/opal/Documents/HPC/"
   (dired-filename . "/home/opal/Documents/HPC/HPCI-mock"))
  ("/home/opal/Documents/HPC/HPCI-mock/"
   (dired-filename . "/home/opal/Documents/HPC/HPCI-mock/result"))
  ("/home/opal/Documents/HPC/HPCI-mock/result/第 12 組 (114062107)/"
-  (dired-filename
-   . "/home/opal/Documents/HPC/HPCI-mock/result/第 12 組 (114062107)/.."))
+  (dired-filename . "/home/opal/Documents/HPC/HPCI-mock/result"))
  ("/home/opal/Documents/HPC/HPCI-mock/result/"
   (dired-filename
    . "/home/opal/Documents/HPC/HPCI-mock/result/icon_check"))
@@ -14,11 +18,6 @@
    . "/home/opal/Documents/HPC/HPCI-mock/result/icon_check/ICON-correctness-summary.md"))
  ("/home/opal/Documents/HPC/HPCI-mock/result/icon_check/ICON-correctness-summary.md"
   . 3554)
- ("/home/opal/Documents/"
-  (dired-filename . "/home/opal/Documents/llm_cybersecurity"))
- ("/home/opal/Documents/llm_cybersecurity/"
-  (dired-filename
-   . "/home/opal/Documents/llm_cybersecurity/Group133_final_report.md"))
  ("/ssh:dual:/home/scc/bin/" (dired-filename . "/ssh:dual:/home/scc"))
  ("/ssh:dual:/home/scc/" (dired-filename . "/ssh:dual:/home/scc/work"))
  ("/ssh:dual:/home/scc/work/run.sh" . 707)

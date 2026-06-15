@@ -221,20 +221,23 @@
 (use-package lua-mode)
 (use-package markdown-mode
   :config
-  ;; 預覽資產(本地、離線,放 assets/;大 JS 由 assets/fetch-preview-assets.sh 下載)
-  (let* ((assets  (expand-file-name "assets/" user-emacs-directory))
-         (cfg     (expand-file-name "markdown_py.json" assets))
-         (mermaid (concat "file://" (expand-file-name "mermaid.min.js" assets)))
-         (mathjax (concat "file://" (expand-file-name "tex-mml-chtml.js" assets))))
+  (let* ((cfg (expand-file-name "assets/markdown_py.json" user-emacs-directory))
+         ;; 數學:優先用本地 mathjax 套件(pacman 裝),沒裝才退回 CDN
+         (mathjax (let ((local (seq-find #'file-exists-p
+                                        '("/usr/share/mathjax/es5/tex-mml-chtml.js"
+                                          "/usr/share/mathjax/tex-mml-chtml.js"
+                                          "/usr/share/mathjax3/es5/tex-mml-chtml.js"))))
+                    (if local (concat "file://" local)
+                      "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"))))
     ;; Python-Markdown + 擴充(預設那支不渲染表格等 GFM)。需 python-pymdown-extensions。
     ;; extra=表格/圍欄程式碼/註腳；tilde=刪節線~~；tasklist=工作清單[ ]；arithmatex=數學$..$
     (setq markdown-command
           (format (concat "markdown_py -x extra -x sane_lists "
                           "-x pymdownx.tilde -x pymdownx.tasklist -x pymdownx.arithmatex -c %s")
                   (shell-quote-argument cfg)))
-    ;; 瀏覽器預覽(C-c C-c v)的 <head>:CSS + 本地 mermaid + 本地 MathJax,
+    ;; 瀏覽器預覽(C-c C-c v)的 <head>:CSS + MathJax(本地套件) + mermaid(CDN,不常用)，
     ;; 並把 ```mermaid(輸出成 code.language-mermaid)轉成 .mermaid div 來繪圖。
-    ;; 注意:走 JS,所以只有 C-c C-c v(外部瀏覽器)會畫 mermaid/數學;eww live 不跑 JS。
+    ;; 走 JS,所以只有 C-c C-c v(外部瀏覽器)會畫 mermaid/數學;eww live 不跑 JS。
     (setq markdown-xhtml-header-content
           (concat
            "<meta charset=\"utf-8\">"
@@ -245,13 +248,17 @@
            "th{background:#f6f8fa;}pre{background:#f6f8fa;padding:1em;overflow:auto;border-radius:6px;}"
            "code{font-family:ui-monospace,monospace;}blockquote{color:#57606a;border-left:.25em solid #d0d7de;padding:0 1em;margin:0;}"
            "</style>"
+           ;; 數學:本地 mathjax 套件(沒裝自動退回 CDN)
            "<script id=\"MathJax-script\" async src=\"" mathjax "\"></script>"
-           "<script src=\"" mermaid "\"></script>"
-           "<script>window.addEventListener('load',function(){"
+           ;; mermaid:CDN(不常用,直接連網)
+           "<script type=\"module\">"
+           "import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';"
            "mermaid.initialize({startOnLoad:false,theme:'neutral'});"
-           "document.querySelectorAll('code.language-mermaid').forEach(function(el){"
-           "var d=document.createElement('div');d.className='mermaid';d.textContent=el.textContent;"
-           "el.closest('pre').replaceWith(d);});mermaid.run();});</script>"))))
+           "window.addEventListener('load',()=>{"
+           "document.querySelectorAll('code.language-mermaid').forEach((el)=>{"
+           "const d=document.createElement('div');d.className='mermaid';d.textContent=el.textContent;"
+           "el.closest('pre').replaceWith(d);});mermaid.run();});"
+           "</script>"))))
 ;; CUDA / HIP 本質是 C++,交給 c++-mode + clangd
 (dolist (pat '("\\.cu\\'" "\\.cuh\\'" "\\.hip\\'"))
   (add-to-list 'auto-mode-alist (cons pat 'c++-mode)))
