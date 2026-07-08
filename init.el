@@ -26,6 +26,12 @@
       (add-to-list 'default-frame-alist '(scroll-bar-width . 16)))
   (scroll-bar-mode -1))
 
+;; surrealism 專屬留白:內容離視窗邊緣浮開 + 字距更透氣
+;; → 呼應桌面「大量留白 / 浮在空中的物件」;retroism 維持緊湊 Platinum 面板感
+(unless my-retro-p
+  (add-to-list 'default-frame-alist '(internal-border-width . 18))
+  (setq-default line-spacing 3))
+
 ;; 視窗之間用立體分隔線(取代細線)，更有 Platinum 的 3D 浮雕感
 (window-divider-mode 1)
 (setq window-divider-default-places t
@@ -384,8 +390,9 @@
 ;;; Startup screen — retro 風 *scratch* banner(開 Emacs 像開老應用程式)
 
 (setq initial-major-mode 'lisp-interaction-mode)
-;; 只用上下橫線(單行,不需逐行對齊右邊),全英文
-(setq initial-scratch-message "\
+;; banner 跟著主題:retroism = yorha·platinum;surrealism = 夜色·空,漂浮月亮 + Magritte 錯視玩笑
+(setq initial-scratch-message
+      (if my-retro-p "\
 ;;
 ;;   ────────────────────────────────────────────
 ;;     RETROISM · Emacs        yorha · platinum
@@ -395,6 +402,19 @@
 ;;     C-x C-r   recent file     C-x g   magit
 ;;     M-x       run command     C-h k   describe key
 ;;
-")
+" "\
+;;
+;;                      ○
+;;   ────────────────────────────────────────────
+;;     SURREALISM · Emacs       空 · The Empty Sky
+;;   ────────────────────────────────────────────
+;;
+;;     C-x C-f   find file       C-x b   switch buffer
+;;     C-x C-r   recent file     C-x g   magit
+;;     M-x       run command     C-h k   describe key
+;;
+;;     « Ceci n'est pas un éditeur »
+;;
+"))
 
 ;;; init.el ends here
