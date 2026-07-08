@@ -126,6 +126,37 @@
     (dimmer-configure-magit)
     (dimmer-mode 1)))
 
+;; 熱套用:重讀 dotfiles 分支,把整套外觀套到「現有」frame(不重啟 daemon、不丟 buffer)。
+;; theme-switch 切桌面主題後會 emacsclient 呼叫這個 → Emacs 即時跟著變 retroism/surrealism。
+(defun my-apply-desktop-look ()
+  "重讀 dotfiles 當前主題分支,套用對應 Emacs 外觀(主題/chrome/留白/透明/失焦淡出)。"
+  (interactive)
+  (setq my-desktop-theme
+        (let ((b (string-trim (shell-command-to-string
+                   "git -C ~/dotfiles symbolic-ref --short HEAD 2>/dev/null"))))
+          (if (member b '("retroism" "surrealism")) b "surrealism"))
+        my-retro-p (string= my-desktop-theme "retroism"))
+  ;; 主題
+  (mapc #'disable-theme custom-enabled-themes)
+  (load-theme (if my-retro-p 'retroism 'surrealism) t)
+  ;; chrome
+  (menu-bar-mode (if my-retro-p 1 -1))
+  (if my-retro-p (progn (scroll-bar-mode 1) (set-scroll-bar-mode 'right)) (scroll-bar-mode -1))
+  (setq window-divider-default-right-width (if my-retro-p 3 1)
+        window-divider-default-bottom-width (if my-retro-p 3 1))
+  (window-divider-mode 1)
+  ;; 留白 / 背景透明:default-frame-alist(新 frame)+ 套到既有 frame
+  (let ((ib (if my-retro-p 0 18)) (ab (if my-retro-p 100 92)))
+    (setf (alist-get 'internal-border-width default-frame-alist) ib
+          (alist-get 'alpha-background default-frame-alist) ab)
+    (setq-default line-spacing (if my-retro-p nil 3))
+    (dolist (f (frame-list))
+      (set-frame-parameter f 'internal-border-width ib)
+      (set-frame-parameter f 'alpha-background ab)))
+  ;; 失焦淡出:surrealism 開、retroism 關
+  (when (require 'dimmer nil t)
+    (dimmer-mode (if my-retro-p -1 1))))
+
 ;;; Font
 
 (defvar my-font-family "Dank Mono")
