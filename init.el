@@ -2,21 +2,35 @@
 
 ;;; Basic UI
 
-;; Mac OS Platinum 的招牌：永遠掛在頂端的選單列(交給 GTK Platinum 主題繪製)
-(menu-bar-mode -1)
+;; ── Emacs 外觀跟著 dotfiles 當前主題分支走 ──
+;; 切桌面主題後,重啟 emacs / daemon 即同步:
+;;   surrealism → Magritte 夜色極簡(無 menu-bar / 無捲軸 / 扁平分隔線)
+;;   retroism   → Mac Platinum(menu-bar + 立體捲軸 + 3D 分隔線)
+(defvar my-desktop-theme
+  (let ((b (string-trim
+            (shell-command-to-string
+             "git -C ~/dotfiles symbolic-ref --short HEAD 2>/dev/null"))))
+    (if (member b '("retroism" "surrealism")) b "surrealism"))
+  "當前桌面主題(讀 dotfiles git 分支;認不得就當 surrealism)。")
+(defvar my-retro-p (string= my-desktop-theme "retroism"))
+
+;; menu-bar:retroism 掛頂端選單列(Platinum 招牌);surrealism 極簡拿掉
+(menu-bar-mode (if my-retro-p 1 -1))
 (tool-bar-mode -1)
 
-;; Retro toolkit scroll bars — drawn by the ClassicPlatinum GTK theme
-;; (chunky 3D trough + paired stepper arrows). Classic right-hand placement.
-(scroll-bar-mode 1)
-(set-scroll-bar-mode 'right)
-(add-to-list 'default-frame-alist '(scroll-bar-width . 16))
+;; 捲軸:retroism 走 ClassicPlatinum 粗捲軸(3D trough + 右側);surrealism 無捲軸
+(if my-retro-p
+    (progn
+      (scroll-bar-mode 1)
+      (set-scroll-bar-mode 'right)
+      (add-to-list 'default-frame-alist '(scroll-bar-width . 16)))
+  (scroll-bar-mode -1))
 
 ;; 視窗之間用立體分隔線(取代細線)，更有 Platinum 的 3D 浮雕感
 (window-divider-mode 1)
 (setq window-divider-default-places t
-      window-divider-default-right-width 3
-      window-divider-default-bottom-width 3)
+      window-divider-default-right-width (if my-retro-p 3 1)   ; retroism 3D 浮雕 / surrealism 扁平
+      window-divider-default-bottom-width (if my-retro-p 3 1))
 
 ;; 相對行號(目前行顯示絕對行號，其餘顯示與游標的距離 → 方便 nM/nk 跳行)
 (setq display-line-numbers-type 'relative)
@@ -93,7 +107,7 @@
 
 ;;; Theme
 
-(load-theme 'surrealism t)
+(load-theme (if my-retro-p 'retroism 'surrealism) t)
 
 ;;; Font
 
