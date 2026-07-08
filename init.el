@@ -30,6 +30,8 @@
 ;; → 呼應桌面「大量留白 / 浮在空中的物件」;retroism 維持緊湊 Platinum 面板感
 (unless my-retro-p
   (add-to-list 'default-frame-alist '(internal-border-width . 18))
+  ;; 背景微透 → 透出夜空(Emacs 29+ alpha-background:只透背景、文字不透,可讀)
+  (add-to-list 'default-frame-alist '(alpha-background . 92))
   (setq-default line-spacing 3))
 
 ;; 視窗之間用立體分隔線(取代細線)，更有 Platinum 的 3D 浮雕感
@@ -114,6 +116,15 @@
 ;;; Theme
 
 (load-theme (if my-retro-p 'retroism 'surrealism) t)
+
+;; surrealism:失焦視窗淡出(呼應桌面「聚焦=在場、失焦=溶回天空」《人的境況》)
+(unless my-retro-p
+  (use-package dimmer
+    :config
+    (setq dimmer-fraction 0.35)
+    (dimmer-configure-which-key)
+    (dimmer-configure-magit)
+    (dimmer-mode 1)))
 
 ;;; Font
 
