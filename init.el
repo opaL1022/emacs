@@ -3,7 +3,7 @@
 ;;; Basic UI
 
 ;; Mac OS Platinum 的招牌：永遠掛在頂端的選單列(交給 GTK Platinum 主題繪製)
-(menu-bar-mode 1)
+(menu-bar-mode -1)
 (tool-bar-mode -1)
 
 ;; Retro toolkit scroll bars — drawn by the ClassicPlatinum GTK theme
@@ -93,7 +93,7 @@
 
 ;;; Theme
 
-(load-theme 'retroism t)
+(load-theme 'surrealism t)
 
 ;;; Font
 
@@ -165,7 +165,10 @@
   :custom
   (completion-styles '(orderless basic))
   (completion-category-defaults nil)
-  (completion-category-overrides '((file (styles basic partial-completion)))))
+  (completion-category-overrides
+   '((file (styles basic partial-completion))
+     (eglot (styles basic))           ; LSP 候選照 clangd 自己的排序/前綴過濾,不被 orderless 打亂
+     (eglot-capf (styles basic)))))
 
 ;; 補全清單改成畫面正中的浮動框(像 Mac 對話框)；僅 GUI 有效,終端機自動 fallback
 (use-package vertico-posframe
@@ -195,11 +198,48 @@
 (use-package magit
   :bind ("C-x g" . magit-status))
 
+;;; sudo 編輯 — 用 TRAMP 的 /sudo:: 以 root 開檔(內建,免裝)
+
+;; 直接開:本機 C-x C-f /sudo::/etc/fstab;遠端 /ssh:host|sudo:host:/etc/fstab
+;; 已開的檔發現沒權限存 → M-x my-sudo-edit 用 root 原地重開(本機/遠端皆可)
+(defun my-sudo-edit (&optional file)
+  "用 root 重新開啟 FILE(預設為目前 buffer 的檔)。
+本機檔走 /sudo::;遠端 TRAMP 檔則在「同一台主機」上再跳一手 sudo。"
+  (interactive)
+  (require 'tramp)
+  (let ((target (or file buffer-file-name
+                    (read-file-name "以 root 開啟檔案: "))))
+    (find-file
+     (if (tramp-tramp-file-p target)
+         ;; 遠端:/<method>:<user@>host|sudo:host:<localname>
+         (let* ((v (tramp-dissect-file-name target))
+                (method (tramp-file-name-method v))
+                (user   (tramp-file-name-user v))
+                (host   (tramp-file-name-host v)))
+           (format "/%s:%s%s|sudo:%s:%s"
+                   method (if user (concat user "@") "") host
+                   host (tramp-file-name-localname v)))
+       (concat "/sudo::" (expand-file-name target))))))
+(global-set-key (kbd "C-c f s") #'my-sudo-edit)
+
 ;;; 括號 — 自動補對 + 高亮對應(全內建)
 
 (electric-pair-mode 1)          ; 打 ( 自動補 )、選取後打括號會包住選取
 (setq show-paren-delay 0)
 (show-paren-mode 1)             ; 高亮對應括號(主題已設配色)
+
+;;; multiple-cursors — 多游標同時編輯(像 VS Code 的 Ctrl-D / 多行游標)
+
+(use-package multiple-cursors
+  :bind (("C-S-c C-S-c" . mc/edit-lines)          ; 選取多行 → 每行行尾各放一個游標
+         ("C->"         . mc/mark-next-like-this)  ; 標記下一個同字串,加游標(像 Ctrl-D)
+         ("C-<"         . mc/mark-previous-like-this) ; 往上一個
+         ("C-c C-<"     . mc/mark-all-like-this)   ; 一次標記全部同字串
+         ;; 取消/微調游標:
+         ("C-M->"       . mc/skip-to-next-like-this)     ; 這個不放游標,跳到下一個符合處
+         ("C-M-<"       . mc/skip-to-previous-like-this) ; 往上跳過
+         ("C-c C->"     . mc/unmark-next-like-this)       ; 退掉往下方向最後加的游標
+         ("C-c C-,"     . mc/unmark-previous-like-this))) ; 退掉往上方向最後加的游標
 
 ;;; corfu — buffer 內即時補全 popup(LSP/關鍵字候選打字就跳)
 
@@ -215,6 +255,17 @@
   :config
   (corfu-popupinfo-mode 1))     ; 候選旁顯示文件說明
 (setq tab-always-indent 'complete) ; TAB:先縮排,已對齊時觸發補全
+
+;;; indent-rigidly(C-x TAB)— 用 < / > 推縮排,一次一個縮排層級(tab-width,非單格空格)
+;; indent-rigidly-map 是預載 indent.el 裡的變數(無 provide,故不能用 with-eval-after-load),開機即存在
+(define-key indent-rigidly-map (kbd ">") #'indent-rigidly-right-to-tab-stop)
+(define-key indent-rigidly-map (kbd "<") #'indent-rigidly-left-to-tab-stop)
+
+;;; yasnippet — snippet 展開引擎。eglot 靠它展開 LSP 候選裡的佔位符:
+;;; 沒它的話,選函數補全只會插入函數名(沒有 () 跟參數),#include 也補不出 <>。
+(use-package yasnippet
+  :init
+  (yas-global-mode 1))
 
 ;;; 語言 major mode(內建以外的) + 副檔名映射
 
