@@ -284,6 +284,38 @@
        (concat "/sudo::" (expand-file-name target))))))
 (global-set-key (kbd "C-c f s") #'my-sudo-edit)
 
+;;; TRAMP 連線共用 — 讓 TRAMP 改吃 ~/.ssh/config 的 ControlMaster
+;; 預設 tramp-use-connection-share=t 時,TRAMP 會在命令列自己塞
+;; -o ControlPath=<自己的> -o ControlPersist=no,覆蓋掉 ssh config,
+;; 導致主連線與 eglot 遠端 server(bash-language-server/pyright/clangd…)
+;; 各開一條沒共用 master 的 ssh → 每次都要重新 OTP。設 nil 後全部多工
+;; 共用 ~/.ssh/%r@%h:%p 這個 master(先 `ssh -MNf f1` 認證一次即可)。
+(with-eval-after-load 'tramp
+  (setq tramp-use-connection-share nil))
+
+;; eglot 起遠端 LSP server 時(eglot.el, bug#61350)會用 let 把
+;; tramp-use-connection-share 強制綁成 'suppress、硬加
+;; -o ControlMaster=no -o ControlPath=none,給 server 開一條「不共用」的獨立
+;; ssh。對國網這種 OTP 主機,這條獨立連線每次都要重新認證 → 每開一個會觸發
+;; eglot 的檔(.sh/.py/.c…)就跳一次 OTP。上面的 nil 對它無效(被 let 蓋掉)。
+;;
+;; 這裡攔截 TRAMP 計算 ssh 選項的函式,只對這幾台 OTP 主機回傳 ""(不加任何
+;; -o),讓 ~/.ssh/config 的 ControlMaster auto 接手、共用已認證的 master →
+;; 全程只需一次 OTP。其他主機維持 eglot 預設(獨立連線,保留 bug#61350 防護)。
+;;
+;; 取捨:對這幾台等於解除 bug#61350 的保護 —— LSP 大量資料(大檔的補全/診斷)
+;; 改走多工 channel,理論上可能出問題。若哪天遇到 eglot 卡住/回應被截斷,再把
+;; 對應語言排除即可。清單只比對短別名;若用完整 hostname 連(/ssh:u..@f1-il..:)
+;; 會漏接、OTP 會回來,固定用 f1/nano4/nano5/twcc 即可。
+(with-eval-after-load 'tramp-sh
+  (advice-add
+   'tramp-ssh-or-plink-options :around
+   (lambda (orig vec)
+     (if (member (tramp-file-name-host vec) '("f1" "nano4" "nano5" "twcc"))
+         ""
+       (funcall orig vec)))
+   '((name . my-otp-force-controlmaster))))
+
 ;;; 括號 — 自動補對 + 高亮對應(全內建)
 
 (electric-pair-mode 1)          ; 打 ( 自動補 )、選取後打括號會包住選取
