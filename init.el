@@ -291,7 +291,13 @@
 ;; 各開一條沒共用 master 的 ssh → 每次都要重新 OTP。設 nil 後全部多工
 ;; 共用 ~/.ssh/%r@%h:%p 這個 master(先 `ssh -MNf f1` 認證一次即可)。
 (with-eval-after-load 'tramp
-  (setq tramp-use-connection-share nil))
+  (setq tramp-use-connection-share nil)
+  ;; TRAMP 起遠端程序用的是 tramp-remote-path(預設只有 /bin /usr/bin …),
+  ;; 不含 ~/.local/bin。eglot 起遠端 LSP server(bash-language-server 等,裝在
+  ;; ~/.local/bin)就會因 PATH 找不到而 exit 127、沒補全。加 tramp-own-remote-path
+  ;; 讓 TRAMP 沿用遠端「登入 shell 的 PATH」(含 ~/.local/bin)。
+  ;; 改完要重連才生效:M-x tramp-cleanup-all-connections(remote-path 有快取)。
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 ;; eglot 起遠端 LSP server 時(eglot.el, bug#61350)會用 let 把
 ;; tramp-use-connection-share 強制綁成 'suppress、硬加
