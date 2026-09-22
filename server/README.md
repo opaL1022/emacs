@@ -21,7 +21,7 @@ alias e='emacs -Q -nw -l ~/emacs-config/server/emacs.d/init.el'
 
 更新設定使用 `git -C ~/emacs-config pull --ff-only`。執行時產生的 `var/` 和個人 `custom.el` 已排除版本控制。
 
-## 搬到伺服器（推薦：獨立目錄）
+## 搬到伺服器（可選：獨立目錄）
 
 本機執行，將 `user@server` 換成實際帳號與主機：
 
@@ -47,20 +47,30 @@ alias e='emacs -Q -nw -l ~/emacs-lite.d/init.el'
 
 ## 作為預設 ~/.emacs.d
 
-也可把提供的 `emacs.d` 放成伺服器的 `~/.emacs.d`，之後用 `emacs -nw`。已有設定請先備份；舊的 `~/.emacs` 或 `~/.emacs.el` 可能會優先被讀取。若不確定，採上面的獨立啟動方式。
+把提供的設定放成伺服器的 `~/.emacs.d` 即會自動載入，不需 alias 或 `-l`。已有設定請先備份；舊的 `~/.emacs` 或 `~/.emacs.el` 可能會優先被讀取。
+
+```sh
+git -C ~/emacs-config pull --ff-only
+mkdir -p ~/.emacs.d
+cp ~/emacs-config/server/emacs.d/*.el ~/.emacs.d/
+emacs -nw 檔名
+```
+
+使用複製安裝時，每次更新 repo 後也要重新執行 `cp`。
 
 壓縮包 `emacs-server.tar.gz` 包含 `emacs.d/` 和這份說明，可用 `tar -xzf emacs-server.tar.gz` 解壓。
 
 ## 保留與調整
 
+- 配色使用內建 Wombat：深灰底、暖白字、柔和語法色，搭配低亮度行高亮與清楚的搜尋、選取色；適合 256 色終端，不需額外主題套件。
 - 保留兩格 C/C++ K&R 縮排、空白取代 Tab、括號配對、括號間 Enter 展開縮排。
 - 保留左右方向鍵與 `C-b` / `C-f` 不跨實體行、最近檔案、游標位置、輸入歷史。
 - 相對行號只開在程式與文字 buffer，`M-x display-line-numbers-mode` 可切換。
 - 補全改為 Icomplete，使用 TAB 補全、RET 確認；新版支援垂直候選列表。
 - 搜尋用 Occur / project.el / rgrep；不用 rg、fd、fzf。目錄搜尋需要系統已有 grep/find，Git 專案功能需要 git，基本編輯不需要它們。
 - Git 改用 VC，shell 改用 Eshell；省略 Magit、Eat、第三方語言模式、LSP、多游標、snippet、桌面主題。
-- Undo 使用內建功能，不保留跨重開 undo 歷史。Emacs 28+ 提供獨立 redo，舊版用內建 undo 操作。
-- 終端可能無法區分 `C-/`、`C-?`；提供 `C-c u` / `C-c r` 作為替代。Meta 鍵不通時可先按 Esc 再按對應字元。
+- `C-/` 使用內建 `undo-only`，避免一般 undo 在操作中轉成 redo。Undo 使用內建功能，不保留跨重開 undo 歷史。Emacs 28+ 提供獨立 redo，舊版用內建 undo 操作。
+- `C-?` 綁定 redo（Emacs 28+）。若按下去刪字，用 `C-h k` 再按該鍵確認是否收到 `DEL`；某些終端會把 Ctrl+Shift+/ 與 Backspace 傳成同一個字元，必須由終端按鍵編碼修正，不能直接把 DEL 改綁 redo，否則 Backspace 也會受影響。另提供 `C-c u` / `C-c r` 作為替代。Meta 鍵不通時可先按 Esc 再按對應字元。
 - 與桌面版不同，開啟備份與自動儲存供 SSH 斷線復原；檔案集中在設定目錄的 `var/`，使用 `M-x recover-file` 復原。此目錄也包含最近路徑和歷史，不要一起分享。日後搬移設定只複製兩個 `.el` 檔即可。
 
 ## 常用按鍵

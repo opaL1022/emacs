@@ -15,6 +15,23 @@
 (dolist (mode '(tool-bar-mode scroll-bar-mode))
   (when (fboundp mode) (funcall mode -1)))
 
+;; Built-in medium-contrast theme: charcoal background, warm white text.
+;; No theme package, fonts or true-color support required (256 colors suffice).
+(load-theme 'wombat t)
+(custom-set-faces
+ '(hl-line ((((class color) (min-colors 89)) (:background "#303030"))
+            (t (:underline t))))
+ '(line-number ((((class color) (min-colors 89))
+                (:foreground "#858585" :background "#242424"))))
+ '(line-number-current-line ((((class color) (min-colors 89))
+                             (:foreground "#e0c080" :background "#303030" :weight bold))))
+ '(region ((((class color) (min-colors 89))
+            (:foreground "#f6f3e8" :background "#485060"))))
+ '(isearch ((((class color) (min-colors 89))
+             (:foreground "#242424" :background "#e0c080"))))
+ '(show-paren-match ((((class color) (min-colors 89))
+                     (:foreground "#f6f3e8" :background "#485060" :weight bold)))))
+
 ;; Match desktop editing preferences.
 (setq-default indent-tabs-mode nil tab-width 2 c-basic-offset 2)
 (setq c-default-style '((java-mode . "java") (awk-mode . "awk")
@@ -139,8 +156,10 @@
 (global-set-key (kbd "C-c p l") #'occur)
 (global-set-key (kbd "C-c t") #'eshell)
 (global-set-key (kbd "C-x g") #'vc-dir)
-(global-set-key (kbd "C-c u") #'undo)
-(global-set-key (kbd "C-/") #'undo)
+(global-set-key (kbd "C-c u") #'undo-only)
+(global-set-key (kbd "C-/") #'undo-only)
+;; Keep the desktop C-? binding. Do not bind DEL: many terminals send
+;; the same DEL byte for Backspace and Ctrl+Shift+/. Use C-h k to diagnose.
 (when (fboundp 'undo-redo)
   (global-set-key (kbd "C-?") #'undo-redo)
   (global-set-key (kbd "C-c r") #'undo-redo))
